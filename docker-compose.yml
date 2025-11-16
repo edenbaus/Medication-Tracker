@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: medtrack_postgres
+    environment:
+      POSTGRES_DB: medtrack
+      POSTGRES_USER: medtrack_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medtrack_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - medtrack_network
+
+  backend:
+    build: ./backend
+    container_name: medtrack_backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://medtrack_user:${DB_PASSWORD}@postgres:5432/medtrack
+      SECRET_KEY: ${SECRET_KEY}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      DEBUG: ${DEBUG:-True}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - medtrack_network
+
+  frontend:
+    build: ./frontend
+    container_name: medtrack_frontend
+    command: npm run dev -- --host 0.0.0.0
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+    depends_on:
+      - backend
+    networks:
+      - medtrack_network
+
+volumes:
+  postgres_data:
+
+networks:
+  medtrack_network:
+    driver: bridge
