@@ -103,8 +103,12 @@ GOOGLE_CLIENT_SECRET=your-client-secret
 GOOGLE_REDIRECT_URI=http://localhost:5173/auth/callback
 
 # Frontend
+# For local access: http://localhost:8000
+# For network access: http://YOUR_HOST_IP:8000 (e.g., http://192.168.1.100:8000)
 VITE_API_URL=http://localhost:8000
 ```
+
+**Note**: To access from other devices on your network, replace `localhost` with your host machine's IP address in `VITE_API_URL` and `GOOGLE_REDIRECT_URI`.
 
 ### 3. Generate Secret Key
 
@@ -171,10 +175,45 @@ docker-compose ps
 
 #### 4. Access Application
 
+**Local Access (same machine):**
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:8000
 - **API Documentation**: http://localhost:8000/docs
 - **Database**: localhost:5432
+
+**Network Access (from other devices):**
+
+The application is configured to accept connections from any device on your local network. To access from another device:
+
+1. Find your host machine's IP address:
+   ```bash
+   # macOS/Linux
+   ifconfig | grep "inet " | grep -v 127.0.0.1
+
+   # Or on macOS
+   ipconfig getifaddr en0  # WiFi
+   ipconfig getifaddr en1  # Ethernet
+
+   # Windows
+   ipconfig
+   ```
+
+2. Access the application using your host's IP address:
+   - **Frontend**: http://192.168.1.x:5173
+   - **Backend API**: http://192.168.1.x:8000
+   - **API Documentation**: http://192.168.1.x:8000/docs
+
+3. Update your `.env` file to use your host's IP:
+   ```env
+   VITE_API_URL=http://192.168.1.x:8000
+   ```
+
+4. Restart the frontend container:
+   ```bash
+   docker-compose restart frontend
+   ```
+
+**Note**: Ensure your firewall allows connections on ports 5173 and 8000.
 
 ### Hot Reload Development
 

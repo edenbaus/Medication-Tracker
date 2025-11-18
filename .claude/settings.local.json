@@ -5,7 +5,17 @@
       "Bash(git config:*)",
       "Bash(tree:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(docker-compose exec:*)",
+      "Bash(docker-compose build:*)",
+      "Bash(docker-compose restart:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(docker-compose logs:*)",
+      "Bash(docker-compose ps:*)",
+      "Bash(npm run build:*)",
+      "Bash(test -f /Users/edenbaus/repos/drug_tracker/backend/pytest.ini)"
     ],
     "deny": [],
     "ask": []
