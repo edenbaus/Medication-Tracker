@@ -1,5 +1,6 @@
 import pytest
 import os
+from datetime import date, datetime, timedelta
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -7,6 +8,16 @@ from app.database import Base, get_db
 from app.main import app
 from app.models.user import User
 from app.utils.security import get_password_hash
+from tests.factories.factories import (
+    UserFactory,
+    ThirdPartyFactory,
+    TagFactory,
+    MedicationFactory,
+    MedicationLogFactory,
+    SideEffectFactory,
+    SymptomFactory,
+    RegimenFactory,
+)
 
 
 # Use the actual PostgreSQL database from docker-compose for testing
@@ -111,3 +122,112 @@ def auth_headers(client, test_user):
     )
     token = response.json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.fixture
+def admin_user(db_session):
+    """Create an admin user for testing."""
+    return UserFactory.create(
+        db_session,
+        username="adminuser",
+        email="admin@example.com",
+        password="adminpassword123",
+        is_admin=True
+    )
+
+
+@pytest.fixture
+def admin_headers(client, admin_user):
+    """Get authentication headers for admin user."""
+    response = client.post(
+        "/api/auth/login",
+        data={
+            "username": admin_user.email,
+            "password": "adminpassword123"
+        }
+    )
+    token = response.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.fixture
+def test_third_party(db_session, test_user):
+    """Create a test third party."""
+    return ThirdPartyFactory.create(
+        db_session,
+        test_user,
+        name="Child",
+        relationship_type="child"
+    )
+
+
+@pytest.fixture
+def test_tag(db_session, test_user):
+    """Create a test tag."""
+    return TagFactory.create(
+        db_session,
+        test_user,
+        name="Important",
+        color="#FF0000"
+    )
+
+
+@pytest.fixture
+def test_medication(db_session, test_user):
+    """Create a test medication."""
+    return MedicationFactory.create(
+        db_session,
+        test_user,
+        drug_name="Aspirin",
+        standard_dose="100mg",
+        date_filled=date.today() - timedelta(days=15),
+        days_supply=30,
+        refills_total=5,
+        refills_used=0
+    )
+
+
+@pytest.fixture
+def test_medication_log(db_session, test_medication):
+    """Create a test medication log."""
+    return MedicationLogFactory.create(
+        db_session,
+        test_medication,
+        dose_taken="100mg",
+        taken_at=datetime.utcnow()
+    )
+
+
+@pytest.fixture
+def test_side_effect(db_session, test_user, test_medication):
+    """Create a test side effect."""
+    return SideEffectFactory.create(
+        db_session,
+        test_user,
+        test_medication,
+        description="Headache",
+        severity="mild"
+    )
+
+
+@pytest.fixture
+def test_symptom(db_session, test_user, test_medication):
+    """Create a test symptom."""
+    return SymptomFactory.create(
+        db_session,
+        test_user,
+        test_medication,
+        symptom_name="Pain",
+        improvement_level=7
+    )
+
+
+@pytest.fixture
+def test_regimen(db_session, test_user):
+    """Create a test regimen."""
+    return RegimenFactory.create(
+        db_session,
+        test_user,
+        name="Morning Regimen",
+        description="Morning medication schedule"
+    )
