@@ -1,0 +1,655 @@
+.journey-timeline-container {
+  background: white;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.journey-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.journey-title h2 {
+  margin: 0 0 5px 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.journey-period {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.journey-controls .control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.journey-controls label {
+  font-weight: 500;
+  color: #333;
+}
+
+.journey-controls select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Summary Stats */
+.journey-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-card:nth-child(2) {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.stat-card:nth-child(3) {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stat-card:nth-child(4) {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+/* Tabs */
+.journey-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.journey-tabs .tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.3s;
+}
+
+.journey-tabs .tab:hover {
+  color: #007bff;
+}
+
+.journey-tabs .tab.active {
+  color: #007bff;
+  border-bottom-color: #007bff;
+}
+
+/* Timeline View */
+.timeline-view {
+  animation: fadeIn 0.3s;
+}
+
+.timeline-legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.legend-icon {
+  font-size: 18px;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e0e0e0;
+}
+
+.timeline-event {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.timeline-event:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-color: #007bff;
+}
+
+.timeline-event::before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #007bff;
+}
+
+.event-medication::before {
+  background: #007bff;
+  border-color: #007bff;
+}
+
+.event-side-effect::before {
+  background: #dc3545;
+  border-color: #dc3545;
+}
+
+.event-symptom::before {
+  background: #28a745;
+  border-color: #28a745;
+}
+
+.event-log::before {
+  background: #6c757d;
+  border-color: #6c757d;
+}
+
+.event-icon {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.event-time {
+  font-size: 12px;
+  color: #666;
+}
+
+.event-medication-badge {
+  background: #007bff;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.event-description {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.severity-badge {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.severity-badge.severity-mild {
+  background: #d4edda;
+  color: #155724;
+}
+
+.severity-badge.severity-moderate {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.severity-badge.severity-severe {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.improvement-badge {
+  display: inline-block;
+  margin-left: 10px;
+  background: #17a2b8;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Correlations View */
+.correlations-view {
+  animation: fadeIn 0.3s;
+}
+
+.correlations-view h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.correlation-cards {
+  display: grid;
+  gap: 20px;
+}
+
+.correlation-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.correlation-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #007bff;
+}
+
+.correlation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.correlation-header h4 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.trend-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.trend-badge.trend-improving {
+  background: #d4edda;
+  color: #155724;
+}
+
+.trend-badge.trend-stable {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.trend-badge.trend-worsening {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.trend-badge.trend-insufficient_data {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+.correlation-stats {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.correlation-stats .stat {
+  font-size: 14px;
+  color: #555;
+}
+
+.medications-list {
+  margin-top: 10px;
+}
+
+.medications-list strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.medication-treatment {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.med-name {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.med-improvement {
+  background: #28a745;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.med-trend {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
+.med-data-points {
+  font-size: 12px;
+  color: #888;
+  margin-left: auto;
+}
+
+/* Medications View */
+.medications-view {
+  animation: fadeIn 0.3s;
+}
+
+.medications-view h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.medication-journey-cards {
+  display: grid;
+  gap: 20px;
+}
+
+.medication-journey-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.medication-journey-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.med-journey-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.med-journey-header h4 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+}
+
+.med-dates {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.med-color-indicator {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.med-journey-stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  flex-wrap: wrap;
+}
+
+.med-journey-stats .stat {
+  font-size: 14px;
+  color: #555;
+}
+
+.med-journey-stats .stat strong {
+  color: #007bff;
+  font-size: 18px;
+}
+
+.med-symptoms,
+.med-side-effects {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.med-symptoms strong,
+.med-side-effects strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.symptoms-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.symptom-item {
+  background: #e7f3ff;
+  color: #004085;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+}
+
+.severity-breakdown {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.severity-count {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.severity-count.mild {
+  background: #d4edda;
+  color: #155724;
+}
+
+.severity-count.moderate {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.severity-count.severe {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.side-effects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.side-effect-item {
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  border-left: 4px solid;
+}
+
+.side-effect-item.severity-mild {
+  background: #d4edda;
+  border-color: #28a745;
+}
+
+.side-effect-item.severity-moderate {
+  background: #fff3cd;
+  border-color: #ffc107;
+}
+
+.side-effect-item.severity-severe {
+  background: #f8d7da;
+  border-color: #dc3545;
+}
+
+.se-severity {
+  font-weight: 600;
+  margin-right: 8px;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.se-description {
+  color: #333;
+}
+
+.more-indicator {
+  text-align: center;
+  color: #666;
+  font-size: 13px;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.empty-state p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.journey-timeline.loading,
+.journey-timeline.error,
+.journey-timeline.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  font-size: 16px;
+}
+
+.journey-timeline.error {
+  color: #d9534f;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .journey-header {
+    flex-direction: column;
+  }
+
+  .journey-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .journey-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .journey-tabs .tab {
+    padding: 10px 16px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .timeline {
+    padding-left: 30px;
+  }
+
+  .timeline::before {
+    left: 10px;
+  }
+
+  .timeline-event::before {
+    left: -25px;
+  }
+
+  .medication-treatment {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .med-data-points {
+    margin-left: 0;
+  }
+}

@@ -29,9 +29,13 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Unauthorized - clear token and redirect to login
-      localStorage.removeItem('access_token')
-      window.location.href = '/login'
+      // Only redirect if we're not already on the login or callback page
+      const currentPath = window.location.pathname
+      if (!currentPath.includes('/login') && !currentPath.includes('/auth/callback')) {
+        // Unauthorized - clear token and redirect to login
+        localStorage.removeItem('access_token')
+        window.location.href = '/login'
+      }
     }
     return Promise.reject(error)
   }

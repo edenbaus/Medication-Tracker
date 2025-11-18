@@ -33,6 +33,21 @@ class TestPasswordHashing:
 
         assert verify_password("wrongpassword", hashed) is False
 
+    def test_long_password_hashing(self):
+        """Test that passwords up to 72 bytes are handled correctly."""
+        # Create a password of 70 bytes (within bcrypt's limit)
+        long_password = "a" * 70
+        hashed = get_password_hash(long_password)
+
+        assert verify_password(long_password, hashed) is True
+
+    def test_unicode_password_hashing(self):
+        """Test that unicode passwords work correctly."""
+        unicode_password = "パスワード🔐test密码"
+        hashed = get_password_hash(unicode_password)
+
+        assert verify_password(unicode_password, hashed) is True
+
 
 class TestJWTTokens:
     """Test suite for JWT token utilities."""

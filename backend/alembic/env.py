@@ -9,8 +9,9 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from app.database import Base
-from app.models.user import User  # Import all models here
 from app.config import settings
+# Import all models to ensure they're registered with Base
+import app.models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

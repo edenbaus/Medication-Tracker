@@ -4,13 +4,17 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from app.config import settings
 
-# Password hashing context
+# Password hashing context using bcrypt
+# Note: Bcrypt has a 72-byte limit on passwords, but this is sufficient for all practical use cases
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
     Verify a plain password against a hashed password.
+
+    Note: Bcrypt has a 72-byte password limit. Passwords longer than this
+    are automatically truncated.
 
     Args:
         plain_password: Plain text password
@@ -24,7 +28,10 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def get_password_hash(password: str) -> str:
     """
-    Hash a password.
+    Hash a password with bcrypt.
+
+    Note: Bcrypt has a 72-byte password limit. Passwords longer than this
+    are automatically truncated.
 
     Args:
         password: Plain text password

@@ -28,6 +28,8 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://medtrack_user:${DB_PASSWORD}@postgres:5432/medtrack
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       SECRET_KEY: ${SECRET_KEY}
       ENVIRONMENT: ${ENVIRONMENT:-development}
       DEBUG: ${DEBUG:-True}

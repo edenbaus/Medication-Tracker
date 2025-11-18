@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from datetime import datetime
 from uuid import UUID
-from typing import Optional
+from typing import Optional, List
 
 
 class UserBase(BaseModel):
@@ -40,3 +40,28 @@ class TokenData(BaseModel):
     """Schema for token payload data."""
     user_id: Optional[str] = None
     email: Optional[str] = None
+
+
+class UserUpdate(BaseModel):
+    """Schema for updating user details (admin only)."""
+    username: Optional[str] = Field(None, min_length=3, max_length=50)
+    email: Optional[EmailStr] = None
+    is_admin: Optional[bool] = None
+
+
+class UserAdminResponse(UserBase):
+    """Schema for user response including admin status."""
+    id: UUID
+    is_admin: bool
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserList(BaseModel):
+    """Schema for paginated list of users."""
+    users: List[UserAdminResponse]
+    total: int
+    page: int = 1
+    page_size: int = 50

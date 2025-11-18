@@ -1,21 +1,22 @@
 import pytest
+import os
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
 from app.database import Base, get_db
 from app.main import app
 from app.models.user import User
 from app.utils.security import get_password_hash
 
-# Create in-memory SQLite database for testing
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
+# Use the actual PostgreSQL database from docker-compose for testing
+# This is more realistic and supports all PostgreSQL features like UUID, JSONB, ENUMs
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://medtrack_user:medtrack_dev_pass_2024@postgres:5432/medtrack"
 )
+
+engine = create_engine(DATABASE_URL)
 
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -23,21 +24,23 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 @pytest.fixture(scope="function")
 def db_session():
     """
-    Create a fresh database for each test.
+    Create a fresh database session for each test.
+
+    Uses transaction rollback to clean up data after each test.
 
     Yields:
         Session: Database session for testing
     """
-    # Create tables
-    Base.metadata.create_all(bind=engine)
+    connection = engine.connect()
+    transaction = connection.begin()
+    db = TestingSessionLocal(bind=connection)
 
-    db = TestingSessionLocal()
     try:
         yield db
     finally:
         db.close()
-        # Drop all tables after test
-        Base.metadata.drop_all(bind=engine)
+        transaction.rollback()
+        connection.close()
 
 
 @pytest.fixture(scope="function")

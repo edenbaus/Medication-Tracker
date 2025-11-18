@@ -1,16 +1,8 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import './styles/theme.css';
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, var(--color-gray-50) 0%, var(--color-primary-50) 100%);
+  min-height: 100vh;
 }
 
 code {
@@ -29,71 +21,88 @@ code {
 }
 
 .form-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 30px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 480px;
+  margin: var(--space-16) auto;
+  padding: var(--space-10);
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-3xl);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--color-border-light);
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-6);
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
+  margin-bottom: var(--space-2);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
 }
 
 .form-group input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-base);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #4CAF50;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
 }
 
 .btn {
   width: 100%;
-  padding: 12px;
-  background-color: #4CAF50;
-  color: white;
+  padding: var(--space-4) var(--space-6);
+  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-700) 100%);
+  color: var(--color-text-inverse);
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
 }
 
 .btn:hover {
-  background-color: #45a049;
+  background: linear-gradient(135deg, var(--color-primary-700) 0%, var(--color-primary-800) 100%);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
 }
 
 .btn:disabled {
-  background-color: #ccc;
+  background: var(--color-gray-300);
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .error {
-  color: #f44336;
-  font-size: 14px;
-  margin-top: 5px;
+  color: var(--color-error-600);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-2);
+  font-weight: var(--font-weight-medium);
 }
 
 .link {
-  color: #4CAF50;
+  color: var(--color-primary-600);
   text-decoration: none;
   cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--transition-fast);
 }
 
 .link:hover {
+  color: var(--color-primary-700);
   text-decoration: underline;
 }
 
@@ -103,4 +112,273 @@ code {
 
 .mt-10 {
   margin-top: 10px;
+}
+
+/* OAuth Buttons */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: #999;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider span {
+  padding: 0 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-google {
+  width: 100%;
+  padding: var(--space-4) var(--space-6);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-google:hover {
+  background-color: var(--color-gray-50);
+  border-color: var(--color-border-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-google:active {
+  background-color: var(--color-gray-100);
+  border-color: var(--color-border-dark);
+  transform: translateY(0);
+}
+
+.btn-google:disabled {
+  background-color: var(--color-gray-100);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+  border-color: var(--color-border-light);
+  transform: none;
+  box-shadow: none;
+}
+
+.google-icon {
+  display: block;
+}
+
+/* Dashboard Styles */
+.user-info {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-info h2 {
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.user-info p {
+  color: #666;
+  margin: 0;
+}
+
+.medications-section {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-gray-50);
+  border-color: var(--color-border-dark);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+/* Medication Form */
+.medication-form {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.medication-form h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+/* Medications List */
+.medications-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.medication-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  transition: box-shadow 0.3s;
+}
+
+.medication-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.medication-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.medication-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.badge-long_term {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.badge-short_term {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.badge-otc {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.medication-details {
+  margin-bottom: 15px;
+}
+
+.medication-details p {
+  margin: 8px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.medication-details strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.medication-actions {
+  display: flex;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.btn-delete {
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+  background-color: #c82333;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.empty-state p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .medications-list {
+    grid-template-columns: 1fr;
+  }
 }

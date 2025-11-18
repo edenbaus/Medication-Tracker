@@ -1,0 +1,346 @@
+.regimens-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.regimens-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.regimens-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.btn-add-regimen {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.btn-add-regimen:hover {
+    background-color: #0056b3;
+}
+
+.regimen-form-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.regimen-form-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.regimen-form {
+    display: grid;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.form-group input[type="color"] {
+    width: 80px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.medication-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #f8f9fa;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.btn-submit {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-submit:hover {
+    background-color: #218838;
+}
+
+.regimens-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.regimen-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s;
+}
+
+.regimen-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.regimen-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.regimen-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.regimen-color-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.regimen-title h3 {
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.regimen-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.btn-icon:hover {
+    opacity: 1;
+}
+
+.regimen-description {
+    margin: 0 0 15px 32px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.regimen-medications {
+    margin-left: 32px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.medications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.med-count {
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-expand {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: #007bff;
+    padding: 5px 10px;
+    transition: transform 0.3s;
+}
+
+.btn-expand:hover {
+    opacity: 0.8;
+}
+
+.medications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.medication-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+}
+
+.med-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.med-name {
+    font-weight: 500;
+    color: #333;
+    font-size: 14px;
+}
+
+.med-dose {
+    color: #666;
+    font-size: 13px;
+}
+
+.btn-remove-med {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #dc3545;
+    padding: 0 5px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    line-height: 1;
+}
+
+.btn-remove-med:hover {
+    opacity: 1;
+}
+
+.add-medication-section {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.add-med-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.empty-state p {
+    margin: 10px 0;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .regimens-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .medication-checkboxes {
+        grid-template-columns: 1fr;
+    }
+}
