@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, field_validator
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from uuid import UUID
 
@@ -53,6 +53,28 @@ class SymptomResponse(SymptomBase):
 class SymptomWithMedication(SymptomResponse):
     """Schema for symptom tracking with medication details."""
     medication: Optional[dict] = None
+
+    class Config:
+        from_attributes = True
+
+
+class SymptomImageResponse(BaseModel):
+    """Schema for symptom image response."""
+    id: UUID
+    symptom_id: UUID
+    filename: str
+    file_path: str
+    file_size: Optional[str] = None
+    content_type: Optional[str] = None
+    uploaded_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class SymptomResponseWithImages(SymptomResponse):
+    """Schema for symptom tracking response with images."""
+    images: List[SymptomImageResponse] = []
 
     class Config:
         from_attributes = True

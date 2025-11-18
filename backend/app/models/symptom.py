@@ -29,6 +29,7 @@ class SymptomTracking(Base):
     # Relationships
     user = relationship("User", back_populates="symptom_trackings")
     medication = relationship("Medication", back_populates="symptoms")
+    images = relationship("SymptomImage", back_populates="symptom", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<SymptomTracking(id={self.id}, symptom_name='{self.symptom_name}', improvement_level={self.improvement_level})>"

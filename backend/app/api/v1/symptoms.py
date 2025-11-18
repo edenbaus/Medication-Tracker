@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, UploadFile, File
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import Optional, List
@@ -8,15 +8,19 @@ from uuid import UUID
 from app.database import get_db
 from app.models.user import User
 from app.models.symptom import SymptomTracking
+from app.models.symptom_image import SymptomImage
 from app.models.medication import Medication
 from app.schemas.symptom import (
     SymptomCreate,
     SymptomUpdate,
     SymptomResponse,
+    SymptomResponseWithImages,
     SymptomWithMedication,
     SymptomTrendData,
+    SymptomImageResponse,
 )
 from app.api.deps import get_current_user
+from app.utils.file_upload import save_multiple_files, delete_image_file
 
 router = APIRouter()
 
@@ -363,6 +367,170 @@ def delete_symptom(
         )
 
     db.delete(symptom)
+    db.commit()
+
+    return None
+
+
+@router.get("/{symptom_id}/with-images", response_model=SymptomResponseWithImages)
+def get_symptom_with_images(
+    symptom_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Get a specific symptom tracking entry with its images.
+
+    Args:
+        symptom_id: Symptom tracking entry ID
+        db: Database session
+        current_user: Current authenticated user
+
+    Returns:
+        Symptom tracking entry with images
+
+    Raises:
+        HTTPException: If symptom not found or doesn't belong to user
+    """
+    symptom = db.query(SymptomTracking).filter(
+        SymptomTracking.id == symptom_id,
+        SymptomTracking.user_id == current_user.id,
+    ).first()
+
+    if not symptom:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Symptom tracking entry not found",
+        )
+
+    return symptom
+
+
+@router.post("/{symptom_id}/images", response_model=List[SymptomImageResponse], status_code=status.HTTP_201_CREATED)
+async def upload_symptom_images(
+    symptom_id: UUID,
+    files: List[UploadFile] = File(..., description="Image files to upload"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Upload one or more images for a symptom tracking entry.
+
+    Args:
+        symptom_id: Symptom tracking entry ID
+        files: List of image files to upload
+        db: Database session
+        current_user: Current authenticated user
+
+    Returns:
+        List of uploaded image records
+
+    Raises:
+        HTTPException: If symptom not found, doesn't belong to user, or file upload fails
+    """
+    # Verify symptom exists and belongs to user
+    symptom = db.query(SymptomTracking).filter(
+        SymptomTracking.id == symptom_id,
+        SymptomTracking.user_id == current_user.id,
+    ).first()
+
+    if not symptom:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Symptom tracking entry not found",
+        )
+
+    # Limit number of files
+    if len(files) > 10:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Maximum 10 images can be uploaded at once",
+        )
+
+    # Save files
+    try:
+        saved_files = await save_multiple_files(files, symptom_id)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error uploading files: {str(e)}",
+        )
+
+    # Create database records for each image
+    image_records = []
+    for file_info in saved_files:
+        image = SymptomImage(
+            symptom_id=symptom_id,
+            filename=file_info["filename"],
+            file_path=file_info["file_path"],
+            file_size=file_info["file_size"],
+            content_type=file_info["content_type"],
+        )
+        db.add(image)
+        image_records.append(image)
+
+    db.commit()
+
+    # Refresh to get IDs
+    for image in image_records:
+        db.refresh(image)
+
+    return image_records
+
+
+@router.delete("/{symptom_id}/images/{image_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_symptom_image(
+    symptom_id: UUID,
+    image_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Delete a specific image from a symptom tracking entry.
+
+    Args:
+        symptom_id: Symptom tracking entry ID
+        image_id: Image ID to delete
+        db: Database session
+        current_user: Current authenticated user
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: If symptom or image not found, or doesn't belong to user
+    """
+    # Verify symptom exists and belongs to user
+    symptom = db.query(SymptomTracking).filter(
+        SymptomTracking.id == symptom_id,
+        SymptomTracking.user_id == current_user.id,
+    ).first()
+
+    if not symptom:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Symptom tracking entry not found",
+        )
+
+    # Find the image
+    image = db.query(SymptomImage).filter(
+        SymptomImage.id == image_id,
+        SymptomImage.symptom_id == symptom_id,
+    ).first()
+
+    if not image:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Image not found",
+        )
+
+    # Delete the file from disk
+    delete_image_file(image.file_path)
+
+    # Delete database record
+    db.delete(image)
     db.commit()
 
     return None

@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
+from pathlib import Path
 from app.config import settings
 from app.api.v1 import auth, medications, tags, admin, logs, third_parties, regimens, side_effects, symptoms, journey, dashboard
 
@@ -56,6 +58,11 @@ app.include_router(side_effects.router, prefix="/api/side-effects", tags=["Side 
 app.include_router(symptoms.router, prefix="/api/symptoms", tags=["Symptoms"])
 app.include_router(journey.router, prefix="/api/journey", tags=["Journey & Analytics"])
 app.include_router(dashboard.router, prefix="/api/dashboard", tags=["Dashboard"])
+
+# Mount uploads directory for serving static files
+uploads_path = Path("/app/uploads")
+uploads_path.mkdir(parents=True, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(uploads_path)), name="uploads")
 
 
 @app.get("/")

@@ -4,6 +4,7 @@ from app.models.tag import Tag, medication_tags
 from app.models.medication_log import MedicationLog
 from app.models.side_effect import SideEffect, SeverityLevel
 from app.models.symptom import SymptomTracking
+from app.models.symptom_image import SymptomImage
 from app.models.third_party import ThirdParty
 from app.models.regimen import Regimen, regimen_medications
 
@@ -17,6 +18,7 @@ __all__ = [
     "SideEffect",
     "SeverityLevel",
     "SymptomTracking",
+    "SymptomImage",
     "ThirdParty",
     "Regimen",
     "regimen_medications",
